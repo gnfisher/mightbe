@@ -2,7 +2,7 @@ module MightBeTest exposing (..)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
-import MightBe exposing (MightBe(..), andMap, map, map2)
+import MightBe exposing (MightBe(..), andMap, andThen, map, map2)
 import Test exposing (..)
 
 
@@ -39,6 +39,18 @@ suite =
             , test "it works with JustDont" <|
                 \_ ->
                     MightBe.andMap JustDont (Only (\a -> a * 2))
+                        |> Expect.equal JustDont
+            ]
+        , describe "MightBe.andThen"
+            [ test "it applies the function without re-wrapping the value" <|
+                \_ ->
+                    Only 1
+                        |> MightBe.andThen (\a -> Only (a * 2))
+                        |> Expect.equal (Only 2)
+            , test "it works with JustDont case" <|
+                \_ ->
+                    JustDont
+                        |> MightBe.andThen (\a -> Only (a * 2))
                         |> Expect.equal JustDont
             ]
         ]

@@ -1,4 +1,4 @@
-module MightBe exposing (MightBe(..), andMap, map, map2)
+module MightBe exposing (MightBe(..), andMap, andThen, map, map2)
 
 
 type MightBe a
@@ -34,3 +34,13 @@ map2 fn mba mbb =
 andMap : MightBe a -> MightBe (a -> b) -> MightBe b
 andMap mba mbfn =
     map2 (\a fn -> fn a) mba mbfn
+
+
+andThen : (a -> MightBe b) -> MightBe a -> MightBe b
+andThen fn mba =
+    case mba of
+        JustDont ->
+            JustDont
+
+        Only val ->
+            fn val
