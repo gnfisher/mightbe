@@ -2,7 +2,7 @@ module MightBeTest exposing (..)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
-import Main exposing (MightBe(..))
+import MightBe exposing (MightBe(..), map)
 import Test exposing (..)
 
 
@@ -12,7 +12,7 @@ suite =
         [ describe "MightBe.map"
             [ test "applies the function to the wrapped value in MightBe" <|
                 \_ ->
-                    Only 1
+                    Only 2
                         |> MightBe.map (\val -> val * 2)
                         |> Expect.equal (Only 4)
             ]
