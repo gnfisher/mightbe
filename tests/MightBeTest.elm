@@ -2,7 +2,7 @@ module MightBeTest exposing (..)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
-import MightBe exposing (MightBe(..), map)
+import MightBe exposing (MightBe(..), map, map2)
 import Test exposing (..)
 
 
@@ -19,6 +19,16 @@ suite =
                 \_ ->
                     JustDont
                         |> MightBe.map (\val -> val * 2)
+                        |> Expect.equal JustDont
+            ]
+        , describe "MightBe.map2"
+            [ test "applies function to combine two MightBes" <|
+                \_ ->
+                    MightBe.map2 (\a b -> a + b) (Only 1) (Only 2)
+                        |> Expect.equal (Only 3)
+            , test "If one is JustDont it returns JustDont" <|
+                \_ ->
+                    MightBe.map2 (\a b -> a + b) (Only 1) JustDont
                         |> Expect.equal JustDont
             ]
         ]
