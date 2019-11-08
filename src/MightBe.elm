@@ -1,4 +1,4 @@
-module MightBe exposing (MightBe(..), map, map2)
+module MightBe exposing (MightBe(..), andMap, map, map2)
 
 
 type MightBe a
@@ -29,3 +29,8 @@ map2 fn mba mbb =
 
                 Only valB ->
                     Only (fn valA valB)
+
+
+andMap : MightBe a -> MightBe (a -> b) -> MightBe b
+andMap mba mbfn =
+    map2 (\a fn -> fn a) mba mbfn
