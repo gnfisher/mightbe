@@ -1,6 +1,7 @@
 module MightBe exposing
     ( MightBe(..)
     , andMap
+    , andMapHard
     , andThen
     , map
     , map2
@@ -40,6 +41,21 @@ map2 fn mba mbb =
 andMap : MightBe a -> MightBe (a -> b) -> MightBe b
 andMap mba mbfn =
     map2 (\a fn -> fn a) mba mbfn
+
+
+andMapHard : MightBe a -> MightBe (a -> b) -> MightBe b
+andMapHard mba mbfn =
+    case mba of
+        JustDont ->
+            JustDont
+
+        Only valA ->
+            case mbfn of
+                JustDont ->
+                    JustDont
+
+                Only valFn ->
+                    Only (valFn valA)
 
 
 andThen : (a -> MightBe b) -> MightBe a -> MightBe b

@@ -1,7 +1,7 @@
 module MightBeTest exposing (suite)
 
 import Expect
-import MightBe exposing (MightBe(..), andMap, andThen, map, map2)
+import MightBe exposing (MightBe(..), andMap, andMapHard, andThen, map, map2)
 import Test exposing (Test, describe, test)
 
 
@@ -50,6 +50,16 @@ suite =
                 \_ ->
                     JustDont
                         |> MightBe.andThen (\a -> Only (a * 2))
+                        |> Expect.equal JustDont
+            ]
+        , describe "MightBe.andMapHard"
+            [ test "it applies the wrapped fn to the first wrapped value" <|
+                \_ ->
+                    MightBe.andMapHard (Only 1) (Only (\a -> a * 2))
+                        |> Expect.equal (Only 2)
+            , test "it works with JustDont" <|
+                \_ ->
+                    MightBe.andMapHard JustDont (Only (\a -> a * 2))
                         |> Expect.equal JustDont
             ]
         ]
