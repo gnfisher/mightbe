@@ -1,7 +1,7 @@
 module MightBeTest exposing (suite)
 
 import Expect
-import MightBe exposing (MightBe(..), andMap, andMapHard, andThen, map, map2)
+import MightBe exposing (MightBe(..), andMap, andThen, map, map2)
 import Test exposing (Test, describe, test)
 
 
@@ -50,16 +50,6 @@ suite =
                 \_ ->
                     None
                         |> MightBe.andThen (\a -> Some (a * 2))
-                        |> Expect.equal None
-            ]
-        , describe "MightBe.andMapHard"
-            [ test "it applies the wrapped fn to the first wrapped value" <|
-                \_ ->
-                    MightBe.andMapHard (Some 1) (Some (\a -> a * 2))
-                        |> Expect.equal (Some 2)
-            , test "it works with None" <|
-                \_ ->
-                    MightBe.andMapHard None (Some (\a -> a * 2))
                         |> Expect.equal None
             ]
         ]
