@@ -9,33 +9,33 @@ module MightBe exposing
 
 
 type MightBe a
-    = Only a
-    | JustDont
+    = Some a
+    | None
 
 
 map : (a -> b) -> MightBe a -> MightBe b
 map fn mightBe =
     case mightBe of
-        Only val ->
-            Only (fn val)
+        Some val ->
+            Some (fn val)
 
-        JustDont ->
-            JustDont
+        None ->
+            None
 
 
 map2 : (a -> b -> c) -> MightBe a -> MightBe b -> MightBe c
 map2 fn mba mbb =
     case mba of
-        JustDont ->
-            JustDont
+        None ->
+            None
 
-        Only valA ->
+        Some valA ->
             case mbb of
-                JustDont ->
-                    JustDont
+                None ->
+                    None
 
-                Only valB ->
-                    Only (fn valA valB)
+                Some valB ->
+                    Some (fn valA valB)
 
 
 andMap : MightBe a -> MightBe (a -> b) -> MightBe b
@@ -46,23 +46,23 @@ andMap mba mbfn =
 andMapHard : MightBe a -> MightBe (a -> b) -> MightBe b
 andMapHard mba mbfn =
     case mba of
-        JustDont ->
-            JustDont
+        None ->
+            None
 
-        Only valA ->
+        Some valA ->
             case mbfn of
-                JustDont ->
-                    JustDont
+                None ->
+                    None
 
-                Only valFn ->
-                    Only (valFn valA)
+                Some valFn ->
+                    Some (valFn valA)
 
 
 andThen : (a -> MightBe b) -> MightBe a -> MightBe b
 andThen fn mba =
     case mba of
-        JustDont ->
-            JustDont
+        None ->
+            None
 
-        Only val ->
+        Some val ->
             fn val

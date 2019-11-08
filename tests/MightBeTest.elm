@@ -11,55 +11,55 @@ suite =
         [ describe "MightBe.map"
             [ test "applies the function to the wrapped value in MightBe" <|
                 \_ ->
-                    Only 2
+                    Some 2
                         |> MightBe.map (\val -> val * 2)
-                        |> Expect.equal (Only 4)
-            , test "returns JustDont when passing in JustDont" <|
+                        |> Expect.equal (Some 4)
+            , test "returns None when passing in None" <|
                 \_ ->
-                    JustDont
+                    None
                         |> MightBe.map (\val -> val * 2)
-                        |> Expect.equal JustDont
+                        |> Expect.equal None
             ]
         , describe "MightBe.map2"
             [ test "applies function to combine two MightBes" <|
                 \_ ->
-                    MightBe.map2 (\a b -> a + b) (Only 1) (Only 2)
-                        |> Expect.equal (Only 3)
-            , test "If one is JustDont it returns JustDont" <|
+                    MightBe.map2 (\a b -> a + b) (Some 1) (Some 2)
+                        |> Expect.equal (Some 3)
+            , test "If one is None it returns None" <|
                 \_ ->
-                    MightBe.map2 (\a b -> a + b) (Only 1) JustDont
-                        |> Expect.equal JustDont
+                    MightBe.map2 (\a b -> a + b) (Some 1) None
+                        |> Expect.equal None
             ]
         , describe "MightBe.andMap"
             [ test "it applies the wrapped fn to the first wrapped value" <|
                 \_ ->
-                    MightBe.andMap (Only 1) (Only (\a -> a * 2))
-                        |> Expect.equal (Only 2)
-            , test "it works with JustDont" <|
+                    MightBe.andMap (Some 1) (Some (\a -> a * 2))
+                        |> Expect.equal (Some 2)
+            , test "it works with None" <|
                 \_ ->
-                    MightBe.andMap JustDont (Only (\a -> a * 2))
-                        |> Expect.equal JustDont
+                    MightBe.andMap None (Some (\a -> a * 2))
+                        |> Expect.equal None
             ]
         , describe "MightBe.andThen"
             [ test "it applies the function without re-wrapping the value" <|
                 \_ ->
-                    Only 1
-                        |> MightBe.andThen (\a -> Only (a * 2))
-                        |> Expect.equal (Only 2)
-            , test "it works with JustDont case" <|
+                    Some 1
+                        |> MightBe.andThen (\a -> Some (a * 2))
+                        |> Expect.equal (Some 2)
+            , test "it works with None case" <|
                 \_ ->
-                    JustDont
-                        |> MightBe.andThen (\a -> Only (a * 2))
-                        |> Expect.equal JustDont
+                    None
+                        |> MightBe.andThen (\a -> Some (a * 2))
+                        |> Expect.equal None
             ]
         , describe "MightBe.andMapHard"
             [ test "it applies the wrapped fn to the first wrapped value" <|
                 \_ ->
-                    MightBe.andMapHard (Only 1) (Only (\a -> a * 2))
-                        |> Expect.equal (Only 2)
-            , test "it works with JustDont" <|
+                    MightBe.andMapHard (Some 1) (Some (\a -> a * 2))
+                        |> Expect.equal (Some 2)
+            , test "it works with None" <|
                 \_ ->
-                    MightBe.andMapHard JustDont (Only (\a -> a * 2))
-                        |> Expect.equal JustDont
+                    MightBe.andMapHard None (Some (\a -> a * 2))
+                        |> Expect.equal None
             ]
         ]
