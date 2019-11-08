@@ -15,5 +15,10 @@ suite =
                     Only 2
                         |> MightBe.map (\val -> val * 2)
                         |> Expect.equal (Only 4)
+            , test "returns JustDont when passing in JustDont" <|
+                \_ ->
+                    JustDont
+                        |> MightBe.map (\val -> val * 2)
+                        |> Expect.equal JustDont
             ]
         ]
