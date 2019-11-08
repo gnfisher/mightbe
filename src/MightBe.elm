@@ -1,4 +1,10 @@
-module MightBe exposing (MightBe(..), andMap, andThen, map, map2)
+module MightBe exposing
+    ( MightBe(..)
+    , andMap
+    , andThen
+    , map
+    , map2
+    )
 
 
 type MightBe a

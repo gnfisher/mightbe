@@ -1,9 +1,8 @@
-module MightBeTest exposing (..)
+module MightBeTest exposing (suite)
 
-import Expect exposing (Expectation)
-import Fuzz exposing (Fuzzer, int, list, string)
+import Expect
 import MightBe exposing (MightBe(..), andMap, andThen, map, map2)
-import Test exposing (..)
+import Test exposing (Test, describe, test)
 
 
 suite : Test
